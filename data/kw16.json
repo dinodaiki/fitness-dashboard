@@ -1,0 +1,54 @@
+{
+  "week": 16,
+  "year": 2026,
+  "dateRange": "13.04.2026 – 19.04.2026",
+  "generatedAt": "2026-04-18T21:00:00+02:00",
+  "athlete": {
+    "name": "Daiki",
+    "age": 22,
+    "height_cm": 190,
+    "startWeight_kg": 99.7,
+    "startDate": "2026-03-30",
+    "goalWeight_kg": 93.5,
+    "goalDate": "2026-05-31",
+    "ultimateGoal_kg": 90.0
+  },
+  "targets": {
+    "calories_kcal": { "min": 2000, "max": 2200 },
+    "protein_g":     { "min": 160,  "max": 180  },
+    "steps_per_day": 11000,
+    "training_days_per_week": 6
+  },
+  "measurements": [
+    { "date": "2026-03-30", "weight_kg": 99.7, "note": "Startgewicht" },
+    { "date": "2026-04-06", "weight_kg": 99.3 },
+    { "date": "2026-04-07", "weight_kg": 98.4 },
+    { "date": "2026-04-08", "weight_kg": 98.5 },
+    { "date": "2026-04-13", "weight_kg": 98.4 },
+    { "date": "2026-04-18", "weight_kg": 96.8, "note": "Wochenmessung KW16" }
+  ],
+  "kpis": {
+    "currentWeight_kg": 96.8,
+    "prevWeekWeight_kg": 98.4,
+    "weekDiff_kg": -1.6,
+    "totalLost_kg": 2.9,
+    "remainingToGoal_kg": 3.3,
+    "progressToGoalPct": 46.8,
+    "progressToUltimateGoalPct": 29.9,
+    "targetWeightToday_kg": 97.8,
+    "aheadOfPlan_kg": 1.0,
+    "weeksRemaining": 6.2,
+    "requiredWeeklyLoss_kg": 0.53
+  },
+  "trainingWeek": {
+    "Monday":    { "type": "Gym",         "completed": true },
+    "Tuesday":   { "type": "Run",         "completed": true },
+    "Wednesday": { "type": "Gym",         "completed": true },
+    "Thursday":  { "type": "Run",         "completed": true },
+    "Friday":    { "type": "Gym",         "completed": true },
+    "Saturday":  { "type": "Calisthenics","completed": true },
+    "Sunday":    { "type": "Rest",        "completed": false }
+  },
+  "coachComment": "Außergewöhnlich starke Woche! −1.6 kg, bereits +1.0 kg vor der Ziellinie. Unter 97 kg geknackt. Protein hochhalten, Schritte konstant – Ziel 31. Mai sehr gut erreichbar.",
+  "nextWeekGoal_kg": 96.3
+}
