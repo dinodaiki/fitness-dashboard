@@ -1,0 +1,37 @@
+{
+  "week": 15,
+  "label": "KW 15",
+  "dateRange": "07.04 – 13.04.2026",
+  "currentWeight": 98.5,
+  "prevWeight": 99.3,
+  "goalWeight": 92.0,
+  "goalDate": "2026-06-30",
+  "startWeight": 99.7,
+  "avgCalories": 1949,
+  "targetCaloriesMin": 2000,
+  "targetCaloriesMax": 2200,
+  "avgProtein": 141,
+  "targetProteinMin": 160,
+  "targetProteinMax": 180,
+  "avgSteps": 10443,
+  "targetSteps": 11000,
+  "trainingDays": 5,
+  "training": [
+    { "day": "Mo", "emoji": "🏃", "type": "Laufen 7.8km\n+ Calisthenics", "active": true },
+    { "day": "Di", "emoji": "🦵", "type": "Beine\n+ Bauch", "active": true },
+    { "day": "Mi", "emoji": "💪", "type": "Schulter + Arme\n+ Stairmaster", "active": true },
+    { "day": "Do", "emoji": "🏃", "type": "Laufen\n5km", "active": true },
+    { "day": "Fr", "emoji": "🛌", "type": "Ruhetag", "active": false },
+    { "day": "Sa", "emoji": "🛌", "type": "Ruhetag", "active": false },
+    { "day": "So", "emoji": "🏃", "type": "Laufen 7.6km\n+ Pull Ups", "active": true }
+  ],
+  "notes": "Erste vollständige Trackingwoche. Protein unter Ziel. Lidl Whey verursacht Akne – Wechsel zu ESN Isoclear.",
+  "coachComment": "Solider Start, Daiki! Du hast in deiner ersten vollständigen Trackingwoche gleich 5 Trainingstage absolviert und 0.8 kg verloren. Das Kaloriendefizit war gut kontrolliert – etwas unter dem Zielbereich, was für Gewichtsabnahme akzeptabel ist. Dein Protein war mit 141 g noch unter dem Ziel von 160–180 g. Der Wechsel zu ESN Isoclear ist die richtige Entscheidung. Die 10.443 Schritte zeigen konstante Aktivität. Fokus für KW 16: Protein auf mindestens 160 g bringen!",
+  "weightHistory": [
+    { "date": "2026-03-30", "weight": 99.7 },
+    { "date": "2026-04-06", "weight": 99.3 },
+    { "date": "2026-04-07", "weight": 98.4 },
+    { "date": "2026-04-08", "weight": 98.5 },
+    { "date": "2026-04-13", "weight": 98.4 }
+  ]
+}
