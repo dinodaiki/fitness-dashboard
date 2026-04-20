@@ -1,32 +1,40 @@
 {
   "kw": 15,
-  "dateRange": "07.04 – 13.04.2026",
-  "weightStart": 99.3,
-  "weightEnd": 98.5,
-  "weightChange": -0.8,
-  "avgCalories": 1949,
-  "targetCalories": 2100,
-  "avgProtein": 141,
-  "targetProtein": 170,
-  "avgSteps": 10443,
-  "targetSteps": 11000,
-  "trainingDays": 5,
+  "zeitraum": "07.04 – 13.04.2026",
+  "gewicht": {
+    "start": 99.3,
+    "ende": 98.5,
+    "differenz": -0.8,
+    "messpunkte": [
+      { "datum": "2026-04-07", "wert": 98.4 },
+      { "datum": "2026-04-08", "wert": 98.5 },
+      { "datum": "2026-04-13", "wert": 98.4 }
+    ]
+  },
+  "kalorien": {
+    "ist": 1949,
+    "ziel_min": 2000,
+    "ziel_max": 2200
+  },
+  "protein": {
+    "ist": 141,
+    "ziel_min": 160,
+    "ziel_max": 180
+  },
+  "schritte": {
+    "ist": 10443,
+    "ziel": 11000
+  },
+  "trainingstage": 5,
   "training": [
-    { "day": "Mo", "emoji": "🏃", "label": "Laufen 7.8km + Calisthenics", "active": true },
-    { "day": "Di", "emoji": "🦵", "label": "Beine + Bauch", "active": true },
-    { "day": "Mi", "emoji": "💪", "label": "Schulter + Arme + Stairmaster", "active": true },
-    { "day": "Do", "emoji": "🏃", "label": "Laufen 5km", "active": true },
-    { "day": "Fr", "emoji": "😴", "label": "Ruhetag", "active": false },
-    { "day": "Sa", "emoji": "😴", "label": "Ruhetag", "active": false },
-    { "day": "So", "emoji": "🏃", "label": "Laufen 7.6km + Pull Ups", "active": true }
+    { "tag": "Mo", "einheit": "Laufen 7.8km + Calisthenics", "emoji": "🏃" },
+    { "tag": "Di", "einheit": "Beine + Bauch", "emoji": "🦵" },
+    { "tag": "Mi", "einheit": "Schulter + Arme + Stairmaster", "emoji": "💪" },
+    { "tag": "Do", "einheit": "Laufen 5km", "emoji": "🏃" },
+    { "tag": "Fr", "einheit": "Ruhetag", "emoji": "😴" },
+    { "tag": "Sa", "einheit": "Ruhetag", "emoji": "😴" },
+    { "tag": "So", "einheit": "Laufen 7.6km + Pull Ups", "emoji": "🏃" }
   ],
-  "notes": "Erste vollständige Trackingwoche. Protein unter Ziel. Lidl Whey verursacht Akne – Wechsel zu ESN Isoclear.",
-  "coachComment": "Solider Start in die erste vollständige Trackingwoche! 5 Trainingstage zeigen echtes Commitment – das ist die Basis für alles. Die Kalorien lagen mit 1949 kcal knapp unter dem Ziel: Iss etwas mehr, damit du Muskelmasse schützt und genug Energie für die Trainings hast. Das Protein war mit 141g zu niedrig – die fehlenden 29g pro Tag summieren sich. Gute Entscheidung, von Lidl Whey auf ESN Isoclear zu wechseln. Die Schritte waren mit 10.443 fast auf Kurs. Nächste Woche: Proteinziel knacken!",
-  "weightHistory": [
-    { "date": "2026-03-30", "label": "30.03", "weight": 99.7 },
-    { "date": "2026-04-06", "label": "06.04", "weight": 99.3 },
-    { "date": "2026-04-07", "label": "07.04", "weight": 98.4 },
-    { "date": "2026-04-08", "label": "08.04", "weight": 98.5 },
-    { "date": "2026-04-13", "label": "13.04", "weight": 98.4 }
-  ]
+  "notizen": "Erste vollständige Trackingwoche. Protein unter Ziel. Lidl Whey verursacht Akne – Wechsel zu ESN Isoclear.",
+  "coach_kommentar": "Solider Einstieg, Daiki! 5 Trainingstage in der ersten vollständigen Woche zeigen echten Biss. Das Kaloriendefizit wirkt – 800g runter. Protein bei 141g ist noch zu niedrig; das neue ESN Isoclear sollte das Problem lösen. Schritte mit 10.443 knapp unterm Tagesziel – hier kannst du mit kurzen Abendspaziergängen die letzten 500 Schritte locker rausholen. Weiter so!"
 }
