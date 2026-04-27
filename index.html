@@ -1,546 +1,599 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daiki – Fitness Dashboard</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daiki – Fitness Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #1c2128;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --green: #3fb950;
+      --yellow: #e3b341;
+      --red: #f85149;
+      --purple: #bc8cff;
+    }
 
-:root {
-  --bg:          #0d1117;
-  --surface:     #161b22;
-  --surface2:    #1f2937;
-  --border:      #30363d;
-  --border-soft: rgba(255,255,255,0.06);
-  --text:        #e6edf3;
-  --muted:       #8b949e;
-  --purple:      #a78bfa;
-  --purple-dim:  rgba(167,139,250,0.1);
-  --green:       #4ade80;
-  --green-dim:   rgba(74,222,128,0.12);
-  --amber:       #fbbf24;
-  --amber-dim:   rgba(251,191,36,0.12);
-  --red:         #f87171;
-  --red-dim:     rgba(248,113,113,0.12);
-  --radius:      12px;
-  --radius-sm:   8px;
-}
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  font-size: 14px;
-  line-height: 1.5;
-}
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.5;
+    }
 
-/* ── Header ── */
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.9rem 2rem;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  gap: 1rem;
-}
-.header-brand { display: flex; align-items: center; gap: 0.6rem; }
-.header-brand h1 { font-size: 1.05rem; font-weight: 600; }
-.header-brand span { color: var(--purple); }
-.header-right { display: flex; align-items: center; gap: 1rem; }
-.header-goal {
-  font-size: 0.72rem;
-  color: var(--muted);
-  padding: 0.3rem 0.75rem;
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  white-space: nowrap;
-}
-.kw-select {
-  background: var(--surface2);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 0.4rem 0.9rem;
-  font-size: 0.85rem;
-  cursor: pointer;
-  outline: none;
-  transition: border-color 0.15s;
-  appearance: none;
-  padding-right: 2rem;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b949e' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.6rem center;
-}
-.kw-select:focus { border-color: var(--purple); }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 28px 24px;
+    }
 
-/* ── Layout ── */
-.container { max-width: 1280px; margin: 0 auto; padding: 1.5rem 2rem 3rem; }
-.section { margin-bottom: 1.25rem; }
-.section-label {
-  font-size: 0.68rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  color: var(--muted);
-  margin-bottom: 0.875rem;
-}
+    /* ── Header ── */
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      gap: 16px;
+      flex-wrap: wrap;
+    }
 
-/* ── KPI Cards ── */
-.kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-}
-.kpi-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.25rem 1.5rem;
-  transition: border-color 0.15s;
-}
-.kpi-card:hover { border-color: rgba(167,139,250,0.3); }
-.kpi-label {
-  font-size: 0.68rem;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  margin-bottom: 0.55rem;
-  font-weight: 500;
-}
-.kpi-value {
-  font-size: 2.1rem;
-  font-weight: 700;
-  line-height: 1;
-  margin-bottom: 0.4rem;
-  font-variant-numeric: tabular-nums;
-}
-.kpi-sub { font-size: 0.72rem; color: var(--muted); }
-.kpi-value.positive { color: var(--green); }
-.kpi-value.negative { color: var(--red); }
-.kpi-value.neutral  { color: var(--text); }
-.kpi-value.accent   { color: var(--purple); }
+    .header-title h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #58a6ff 0%, #bc8cff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
-/* ── Card ── */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.5rem;
-}
-.card-title {
-  font-size: 0.72rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--muted);
-  margin-bottom: 1.25rem;
-}
+    .header-title .subtitle {
+      margin-top: 6px;
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
 
-/* ── Charts ── */
-.chart-wrap { position: relative; }
-.chart-wrap.tall   { height: 400px; }
-.chart-wrap.medium { height: 210px; }
+    .kw-selector {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-top: 4px;
+    }
 
-.metric-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-}
+    .kw-selector label {
+      font-size: 0.8125rem;
+      color: var(--muted);
+      font-weight: 500;
+      white-space: nowrap;
+    }
 
-/* ── Training Tiles ── */
-.training-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 0.75rem;
-}
-.tile {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1rem 0.6rem;
-  text-align: center;
-  transition: border-color 0.15s, background 0.15s;
-}
-.tile.active {
-  border-color: rgba(167,139,250,0.45);
-  background: var(--purple-dim);
-}
-.tile.rest { opacity: 0.38; }
-.tile-day {
-  font-size: 0.62rem;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  margin-bottom: 0.55rem;
-}
-.tile-emoji { font-size: 1.7rem; line-height: 1; margin-bottom: 0.5rem; }
-.tile-label { font-size: 0.71rem; font-weight: 600; color: var(--text); line-height: 1.35; }
-.tile-detail { font-size: 0.63rem; color: var(--muted); margin-top: 0.3rem; }
+    .kw-selector select {
+      -webkit-appearance: none;
+      appearance: none;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 36px 8px 14px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238b949e' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 13px center;
+      transition: border-color 0.15s;
+    }
 
-/* ── Table ── */
-.metrics-table { width: 100%; border-collapse: collapse; }
-.metrics-table th {
-  text-align: left;
-  padding: 0.55rem 1rem;
-  font-size: 0.68rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--muted);
-  border-bottom: 1px solid var(--border);
-}
-.metrics-table td {
-  padding: 0.8rem 1rem;
-  border-bottom: 1px solid var(--border-soft);
-  vertical-align: middle;
-}
-.metrics-table tr:last-child td { border-bottom: none; }
-.metrics-table tr:hover td { background: rgba(255,255,255,0.02); }
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  padding: 0.22rem 0.65rem;
-  border-radius: 100px;
-  font-size: 0.7rem;
-  font-weight: 500;
-  white-space: nowrap;
-}
-.badge.ok   { background: var(--green-dim); color: var(--green); }
-.badge.warn { background: var(--amber-dim); color: var(--amber); }
+    .kw-selector select:hover,
+    .kw-selector select:focus {
+      border-color: var(--accent);
+      outline: none;
+    }
 
-/* ── Coach Box ── */
-.coach-card {
-  background: linear-gradient(135deg, rgba(167,139,250,0.08) 0%, rgba(248,113,113,0.05) 100%);
-  border: 1px solid rgba(167,139,250,0.22);
-  border-radius: var(--radius);
-  padding: 1.5rem;
-}
-.coach-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
-.coach-avatar {
-  width: 38px; height: 38px;
-  background: var(--purple-dim);
-  border: 1px solid rgba(167,139,250,0.3);
-  border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem; flex-shrink: 0;
-}
-.coach-name { font-weight: 600; font-size: 0.9rem; }
-.coach-sub  { font-size: 0.7rem; color: var(--muted); }
-.coach-text { color: var(--muted); line-height: 1.85; font-size: 0.875rem; }
+    /* ── KPI Grid ── */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
 
-/* ── Notes ── */
-.notes-row {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 0.8rem 1.25rem;
-  font-size: 0.82rem;
-  color: var(--muted);
-  line-height: 1.65;
-}
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 22px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
 
-/* ── Loading ── */
-.loading {
-  display: flex; align-items: center; justify-content: center;
-  height: 200px; color: var(--muted); font-size: 0.875rem;
-}
+    .kpi-card:hover {
+      border-color: rgba(88, 166, 255, 0.35);
+      transform: translateY(-2px);
+    }
 
-/* ── Responsive ── */
-@media (max-width: 1100px) {
-  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-  .metric-grid { grid-template-columns: 1fr; }
-  .training-grid { grid-template-columns: repeat(4, 1fr); }
-}
-@media (max-width: 680px) {
-  .container { padding: 1rem; }
-  .header { padding: 0.75rem 1rem; }
-  .kpi-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-  .kpi-value { font-size: 1.6rem; }
-  .training-grid { grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
-  .header-goal { display: none; }
-}
-</style>
+    .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+
+    .kpi-value {
+      font-size: 2.25rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 6px;
+      letter-spacing: -0.03em;
+    }
+
+    .kpi-sub {
+      font-size: 0.8125rem;
+      color: var(--muted);
+    }
+
+    .c-accent  { color: var(--accent); }
+    .c-green   { color: var(--green); }
+    .c-yellow  { color: var(--yellow); }
+    .c-red     { color: var(--red); }
+
+    .progress-track {
+      background: var(--border);
+      border-radius: 100px;
+      height: 4px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 100px;
+      background: linear-gradient(90deg, var(--accent), var(--green));
+      transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    .card-title {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
+    /* ── Weight Chart ── */
+    .weight-chart-wrap {
+      margin-bottom: 24px;
+    }
+
+    .chart-container {
+      position: relative;
+      height: 400px;
+    }
+
+    /* ── Metric Charts Row ── */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .metric-chart-container {
+      position: relative;
+      height: 260px;
+    }
+
+    /* ── Section header ── */
+    .section-header {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    /* ── Training Grid ── */
+    .training-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .day-tile {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 10px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .day-tile.has-training {
+      border-color: rgba(88, 166, 255, 0.25);
+      background: linear-gradient(135deg, #161b22 0%, #1a2332 100%);
+    }
+
+    .day-tile.has-training:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .day-tile.rest-day {
+      opacity: 0.42;
+    }
+
+    .day-name {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .day-emoji {
+      font-size: 1.625rem;
+      margin-bottom: 8px;
+      line-height: 1;
+    }
+
+    .day-desc {
+      font-size: 0.6875rem;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    /* ── Stats Table ── */
+    .stats-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .stats-table th {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0 16px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stats-table td {
+      padding: 14px 16px;
+      font-size: 0.875rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stats-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .stats-table td:first-child {
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .badge-ok {
+      background: rgba(63, 185, 80, 0.12);
+      color: var(--green);
+      border: 1px solid rgba(63, 185, 80, 0.25);
+    }
+
+    .badge-warn {
+      background: rgba(227, 179, 65, 0.12);
+      color: var(--yellow);
+      border: 1px solid rgba(227, 179, 65, 0.25);
+    }
+
+    /* ── Coach Comment ── */
+    .coach-card {
+      background: linear-gradient(135deg, rgba(88, 166, 255, 0.05) 0%, rgba(188, 140, 255, 0.05) 100%);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 24px;
+    }
+
+    .coach-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .coach-card p {
+      font-size: 0.9375rem;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 24px 0 8px;
+      font-size: 0.8125rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      margin-top: 8px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 1100px) {
+      .kpi-grid     { grid-template-columns: repeat(2, 1fr); }
+      .metrics-row  { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .training-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    @media (max-width: 540px) {
+      .container      { padding: 16px; }
+      .kpi-grid       { grid-template-columns: repeat(2, 1fr); }
+      .kpi-value      { font-size: 1.75rem; }
+      .training-grid  { grid-template-columns: repeat(2, 1fr); }
+      .header-title h1 { font-size: 1.35rem; }
+      .chart-container { height: 300px; }
+    }
+  </style>
 </head>
 <body>
+<div class="container">
 
-<header class="header">
-  <div class="header-brand">
-    <span style="font-size:1.25rem">🏋️</span>
-    <h1><span>Daiki</span>'s Fitness Dashboard</h1>
+  <!-- ── Header ── -->
+  <header class="header">
+    <div class="header-title">
+      <h1>Daiki's Fitness Dashboard</h1>
+      <div class="subtitle">Ziel: 99,7 kg → 92,0 kg bis 30. Juni 2026 &nbsp;·&nbsp; 1,90 m &nbsp;·&nbsp; 22 Jahre</div>
+    </div>
+    <div class="kw-selector">
+      <label for="kwSelect">Kalenderwoche</label>
+      <select id="kwSelect">
+        <option value="17">KW 17 (20.04 – 26.04)</option>
+        <option value="16">KW 16 (13.04 – 19.04)</option>
+        <option value="15">KW 15 (07.04 – 13.04)</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- ── KPI Cards ── -->
+  <div class="kpi-grid" id="kpiGrid">
+    <div class="kpi-card"><div style="color:var(--muted);font-size:.875rem">Lädt…</div></div>
+    <div class="kpi-card"></div>
+    <div class="kpi-card"></div>
+    <div class="kpi-card"></div>
   </div>
-  <div class="header-right">
-    <span class="header-goal">Ziel: 92 kg bis 30.06.2026</span>
-    <select class="kw-select" id="kwSelector" onchange="loadKW(this.value)">
-      <option value="15">KW 15 · 07.04 – 13.04</option>
-      <option value="16" selected>KW 16 · 13.04 – 19.04</option>
-    </select>
-  </div>
-</header>
 
-<main class="container">
-
-  <!-- KPI Cards -->
-  <div class="section">
-    <div class="kpi-grid">
-      <div class="kpi-card">
-        <div class="kpi-label">Aktuelles Gewicht</div>
-        <div class="kpi-value neutral" id="kpi-weight">–</div>
-        <div class="kpi-sub" id="kpi-weight-sub">–</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Δ zur Vorwoche</div>
-        <div class="kpi-value" id="kpi-diff">–</div>
-        <div class="kpi-sub" id="kpi-diff-sub">–</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Zielfortschritt</div>
-        <div class="kpi-value accent" id="kpi-progress">–</div>
-        <div class="kpi-sub" id="kpi-progress-sub">– kg von 7.7 kg</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Trainingstage</div>
-        <div class="kpi-value" id="kpi-training">–</div>
-        <div class="kpi-sub">von 7 Tagen (Ziel ≥ 5)</div>
-      </div>
+  <!-- ── Weight Chart ── -->
+  <div class="card weight-chart-wrap">
+    <div class="card-title">Gewichtsverlauf — alle Messpunkte</div>
+    <div class="chart-container">
+      <canvas id="weightChart"></canvas>
     </div>
   </div>
 
-  <!-- Weight Chart -->
-  <div class="section card">
-    <div class="card-title">📈 Gewichtsverlauf · alle Messpunkte + Ziellinie</div>
-    <div class="chart-wrap tall">
-      <canvas id="chart-weight"></canvas>
-    </div>
-  </div>
-
-  <!-- Metric Charts -->
-  <div class="section metric-grid">
+  <!-- ── 3 Metric Charts ── -->
+  <div class="metrics-row">
     <div class="card">
-      <div class="card-title">🔥 Kalorien · Ist vs. Ziel</div>
-      <div class="chart-wrap medium">
-        <canvas id="chart-calories"></canvas>
-      </div>
+      <div class="card-title">Kalorien (kcal/Tag)</div>
+      <div class="metric-chart-container"><canvas id="kcalChart"></canvas></div>
     </div>
     <div class="card">
-      <div class="card-title">🥩 Protein · Ist vs. Ziel</div>
-      <div class="chart-wrap medium">
-        <canvas id="chart-protein"></canvas>
-      </div>
+      <div class="card-title">Protein (g/Tag)</div>
+      <div class="metric-chart-container"><canvas id="proteinChart"></canvas></div>
     </div>
     <div class="card">
-      <div class="card-title">👟 Schritte · Ist vs. Ziel</div>
-      <div class="chart-wrap medium">
-        <canvas id="chart-steps"></canvas>
-      </div>
+      <div class="card-title">Schritte/Tag</div>
+      <div class="metric-chart-container"><canvas id="stepsChart"></canvas></div>
     </div>
   </div>
 
-  <!-- Training Plan -->
-  <div class="section">
-    <div class="section-label">📅 Trainingsplan der Woche</div>
-    <div class="training-grid" id="training-grid"></div>
-  </div>
+  <!-- ── Training Week ── -->
+  <div class="section-header">Trainingsplan KW <span id="kwLabel">–</span></div>
+  <div class="training-grid" id="trainingGrid"></div>
 
-  <!-- Metrics Table -->
-  <div class="section card">
-    <div class="card-title">📊 Schlüsselzahlen im Überblick</div>
-    <table class="metrics-table">
+  <!-- ── Stats Table ── -->
+  <div class="card" style="margin-bottom:24px">
+    <div class="card-title">Schlüsselzahlen</div>
+    <table class="stats-table">
       <thead>
         <tr>
           <th>Metrik</th>
-          <th>Ist (Ø)</th>
+          <th>Ø Diese Woche</th>
           <th>Ziel</th>
           <th>Status</th>
         </tr>
       </thead>
-      <tbody id="metrics-tbody"></tbody>
+      <tbody id="statsBody"></tbody>
     </table>
   </div>
 
-  <!-- Coach Comment -->
-  <div class="section coach-card">
-    <div class="coach-header">
-      <div class="coach-avatar">🤖</div>
-      <div>
-        <div class="coach-name">Coach-Kommentar · KW <span id="coach-kw">–</span></div>
-        <div class="coach-sub">Wöchentliche Analyse &amp; Feedback</div>
-      </div>
-    </div>
-    <p class="coach-text" id="coach-text">–</p>
+  <!-- ── Coach Comment ── -->
+  <div class="coach-card">
+    <div class="coach-label">Coach-Kommentar</div>
+    <p id="coachText">Lädt…</p>
   </div>
 
-  <!-- Notes -->
-  <div class="section">
-    <div class="notes-row">
-      📝 <strong style="color:var(--text)">Notizen:</strong>
-      <span id="notes-text">–</span>
-    </div>
-  </div>
+  <footer class="footer">
+    Generiert am 27.04.2026 &nbsp;·&nbsp; Daiki Fitness Dashboard
+  </footer>
 
-</main>
+</div><!-- /container -->
 
 <script>
-const DAYS = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+/* ════════════════════════════════════════
+   GLOBAL CONFIG
+════════════════════════════════════════ */
+Chart.defaults.color        = '#8b949e';
+Chart.defaults.borderColor  = '#30363d';
+Chart.defaults.font.family  = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+Chart.defaults.font.size    = 12;
 
-// Fixed goal line: 30.03.2026 → 30.06.2026
-const GOAL_LINE = [
+const KWS = [15, 16, 17];
+const kwCache = {};
+let kcalChartInst = null, proteinChartInst = null, stepsChartInst = null;
+
+/* ── All-time weight measurements ── */
+const weightHistory = [
   { x: '2026-03-30', y: 99.7 },
-  { x: '2026-06-30', y: 92.0 }
+  { x: '2026-04-06', y: 99.3 },
+  { x: '2026-04-07', y: 98.4 },
+  { x: '2026-04-08', y: 98.5 },
+  { x: '2026-04-13', y: 98.4 },
+  { x: '2026-04-15', y: 97.7 },
+  { x: '2026-04-17', y: 98.1 },
+  { x: '2026-04-18', y: 96.8 },
+  { x: '2026-04-19', y: 96.3 },
+  { x: '2026-04-21', y: 96.8 },
+  { x: '2026-04-22', y: 96.3 },
+  { x: '2026-04-23', y: 96.8 },
+  { x: '2026-04-24', y: 96.1 },
+  { x: '2026-04-25', y: 95.9 },
+  { x: '2026-04-27', y: 98.0 },
 ];
 
-// Chart.js global defaults
-Chart.defaults.color = '#8b949e';
-Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif";
-Chart.defaults.font.size = 11;
+/* Linear target: 99.7 kg (30.03) → 92.0 kg (30.06) */
+const goalLine = [
+  { x: '2026-03-30', y: 99.7 },
+  { x: '2026-06-30', y: 92.0 },
+];
 
-const CHART_GRID_COLOR  = 'rgba(255,255,255,0.05)';
-const TOOLTIP_STYLE = {
-  backgroundColor: '#1f2937',
-  borderColor: '#30363d',
-  borderWidth: 1,
-  titleColor: '#e6edf3',
-  bodyColor: '#8b949e',
-  padding: 10,
-  cornerRadius: 8,
-};
+/* ════════════════════════════════════════
+   WEIGHT CHART
+════════════════════════════════════════ */
+function initWeightChart() {
+  const ctx = document.getElementById('weightChart').getContext('2d');
 
-const charts = {};
-
-/* ── Load & Render ── */
-async function loadKW(nr) {
-  const res = await fetch(`data/kw${nr}.json`);
-  const d = await res.json();
-  render(d);
-}
-
-function render(d) {
-  renderKPIs(d);
-  renderWeightChart(d);
-  renderBarChart('chart-calories', d.avgCalories, [d.targetCaloriesMin, d.targetCaloriesMax], '#f87171', ' kcal', 1400, 2500);
-  renderBarChart('chart-protein',  d.avgProtein,  [d.targetProteinMin,  d.targetProteinMax],  '#4ade80', 'g',     80,   220);
-  renderBarChart('chart-steps',    d.avgSteps,    [d.targetSteps],                             '#fbbf24', '',      7000, 12500);
-  renderTraining(d);
-  renderTable(d);
-  renderCoach(d);
-}
-
-/* ── KPIs ── */
-function renderKPIs(d) {
-  const diff  = +(d.weightEnd - d.weightStart).toFixed(1);
-  const lost  = +(99.7 - d.weightEnd).toFixed(1);
-  const pct   = Math.round((lost / (99.7 - 92)) * 100);
-
-  set('kpi-weight',      d.weightEnd.toFixed(1) + ' kg');
-  set('kpi-weight-sub',  'Start der Woche: ' + d.weightStart + ' kg');
-
-  const diffEl = document.getElementById('kpi-diff');
-  diffEl.textContent = (diff > 0 ? '+' : '') + diff + ' kg';
-  diffEl.className   = 'kpi-value ' + (diff < 0 ? 'positive' : diff > 0 ? 'negative' : 'neutral');
-  set('kpi-diff-sub', diff < 0 ? 'Abnahme diese Woche ✓' : diff > 0 ? 'Zunahme diese Woche' : 'Kein Unterschied');
-
-  set('kpi-progress',     pct + '%');
-  set('kpi-progress-sub', lost + ' kg von 7.7 kg geschafft');
-
-  const trainEl = document.getElementById('kpi-training');
-  trainEl.textContent = d.trainingDays;
-  trainEl.className   = 'kpi-value ' + (d.trainingDays >= 5 ? 'positive' : 'accent');
-}
-
-/* ── Weight Chart ── */
-function renderWeightChart(d) {
-  const ctx = document.getElementById('chart-weight');
-  if (charts.weight) charts.weight.destroy();
-
-  charts.weight = new Chart(ctx, {
+  new Chart(ctx, {
     type: 'line',
     data: {
       datasets: [
         {
-          label: 'Gewicht (kg)',
-          data: d.weightHistory.map(p => ({ x: p.ts, y: p.weight })),
-          borderColor: '#a78bfa',
-          backgroundColor: 'rgba(167,139,250,0.08)',
+          label: 'Gewicht',
+          data: weightHistory,
+          borderColor: '#58a6ff',
+          backgroundColor: function(context) {
+            const chart = context.chart;
+            const { ctx: c, chartArea } = chart;
+            if (!chartArea) return 'transparent';
+            const g = c.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+            g.addColorStop(0, 'rgba(88,166,255,0.22)');
+            g.addColorStop(1, 'rgba(88,166,255,0.02)');
+            return g;
+          },
+          fill: true,
+          tension: 0.35,
           borderWidth: 2.5,
           pointRadius: 7,
           pointHoverRadius: 10,
-          pointBackgroundColor: '#a78bfa',
+          pointBackgroundColor: '#58a6ff',
           pointBorderColor: '#0d1117',
           pointBorderWidth: 2,
-          tension: 0.35,
-          fill: true,
-          order: 1,
+          order: 2,
         },
         {
-          label: 'Ziellinie · 92 kg am 30.06',
-          data: GOAL_LINE,
-          borderColor: 'rgba(248,113,113,0.32)',
+          label: 'Ziel (92 kg)',
+          data: goalLine,
+          borderColor: 'rgba(63,185,80,0.45)',
           borderWidth: 1,
-          borderDash: [5, 5],
-          pointRadius: 3,
+          borderDash: [8, 6],
+          pointRadius: 4,
           pointHoverRadius: 5,
-          pointBackgroundColor: 'rgba(248,113,113,0.45)',
+          pointBackgroundColor: 'rgba(63,185,80,0.6)',
           pointBorderWidth: 0,
-          tension: 0,
           fill: false,
-          order: 2,
+          tension: 0,
+          order: 1,
         }
       ]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
-      scales: {
-        x: {
-          type: 'time',
-          time: {
-            unit: 'day',
-            tooltipFormat: 'dd.MM.yyyy',
-            displayFormats: { day: 'dd.MM' }
-          },
-          min: '2026-03-23',
-          max: '2026-07-07',
-          grid: { color: CHART_GRID_COLOR },
-          ticks: { maxTicksLimit: 14, color: '#8b949e' },
-          border: { display: false },
-        },
-        y: {
-          min: 88,
-          max: 101,
-          grid: { color: CHART_GRID_COLOR },
-          ticks: {
-            callback: v => v.toFixed(0) + ' kg',
-            stepSize: 1,
-            color: '#8b949e',
-          },
-          border: { display: false },
-        }
-      },
+      animation: { duration: 700 },
       plugins: {
         legend: {
+          display: true,
           position: 'top',
           align: 'end',
           labels: {
             color: '#8b949e',
             usePointStyle: true,
-            pointStyleWidth: 10,
+            pointStyleWidth: 8,
             padding: 20,
-            font: { size: 11 },
+            font: { size: 12 },
           }
         },
         tooltip: {
-          ...TOOLTIP_STYLE,
+          backgroundColor: '#1c2128',
+          borderColor: '#30363d',
+          borderWidth: 1,
+          padding: 12,
           callbacks: {
-            label: ctx => ' ' + ctx.dataset.label.split(' ')[0] + ': ' + ctx.parsed.y.toFixed(1) + ' kg'
+            title: items => {
+              const d = new Date(items[0].parsed.x);
+              return d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            },
+            label: item => ` ${item.dataset.label}: ${item.parsed.y.toFixed(1)} kg`
+          }
+        }
+      },
+      scales: {
+        x: {
+          type: 'time',
+          time: {
+            unit: 'week',
+            displayFormats: { week: 'dd.MM.' },
+            tooltipFormat: 'dd.MM.yyyy',
+          },
+          min: '2026-03-25',
+          max: '2026-07-05',
+          grid: { color: '#1c2128' },
+          ticks: { color: '#8b949e', maxTicksLimit: 15 }
+        },
+        y: {
+          min: 88,
+          max: 101,
+          grid: { color: '#1c2128' },
+          ticks: {
+            color: '#8b949e',
+            callback: v => v + ' kg',
+            stepSize: 1,
           }
         }
       }
@@ -548,58 +601,79 @@ function renderWeightChart(d) {
   });
 }
 
-/* ── Metric Bar Charts ── */
-function renderBarChart(id, actual, targets, color, unit, yMin, yMax) {
-  if (charts[id]) charts[id].destroy();
+/* ════════════════════════════════════════
+   METRIC CHARTS (all weeks, Ist vs. Ziel)
+════════════════════════════════════════ */
+function createMetricChart(id, values, target, color, unit, yMin, yMax, targetLabel) {
+  const ctx = document.getElementById(id).getContext('2d');
+  const labels = KWS.map(k => 'KW ' + k);
 
-  const labels = targets.length === 2
-    ? ['Ø Ist', 'Ziel Min', 'Ziel Max']
-    : ['Ø Ist', 'Ziel'];
-
-  const data = [actual, ...targets];
-  const bgColors = [color, ...targets.map(() => 'rgba(255,255,255,0.07)')];
-  const bdColors = [color, ...targets.map(() => 'rgba(255,255,255,0.15)')];
-
-  charts[id] = new Chart(document.getElementById(id), {
-    type: 'bar',
+  return new Chart(ctx, {
     data: {
       labels,
-      datasets: [{
-        data,
-        backgroundColor: bgColors,
-        borderColor: bdColors,
-        borderWidth: 1,
-        borderRadius: 7,
-        borderSkipped: false,
-      }]
+      datasets: [
+        {
+          type: 'bar',
+          label: 'Ist',
+          data: values,
+          backgroundColor: labels.map(() => color + '55'),
+          borderColor:      labels.map(() => color),
+          borderWidth: 1.5,
+          borderRadius: 6,
+          barPercentage: 0.55,
+          order: 2,
+        },
+        {
+          type: 'line',
+          label: targetLabel,
+          data: labels.map(() => target),
+          borderColor: 'rgba(63,185,80,0.65)',
+          borderWidth: 1.5,
+          borderDash: [5, 4],
+          pointRadius: 0,
+          fill: false,
+          tension: 0,
+          order: 1,
+        }
+      ]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      animation: { duration: 400 },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+          align: 'end',
+          labels: { color: '#8b949e', usePointStyle: true, padding: 14, font: { size: 11 } }
+        },
+        tooltip: {
+          backgroundColor: '#1c2128',
+          borderColor: '#30363d',
+          borderWidth: 1,
+          padding: 10,
+          callbacks: {
+            label: item => {
+              const val = item.parsed.y.toLocaleString('de');
+              if (item.dataset.type === 'line') return ` ${item.dataset.label}: ${val}${unit ? ' '+unit : ''}`;
+              return ` Ø ${item.label}: ${val}${unit ? ' '+unit : ''}`;
+            }
+          }
+        }
+      },
       scales: {
+        x: {
+          grid: { display: false },
+          ticks: { color: '#8b949e' }
+        },
         y: {
           min: yMin,
           max: yMax,
-          grid: { color: CHART_GRID_COLOR },
+          grid: { color: '#1c2128' },
           ticks: {
-            callback: v => v.toLocaleString('de-DE') + unit,
-            maxTicksLimit: 6,
             color: '#8b949e',
-          },
-          border: { display: false },
-        },
-        x: {
-          grid: { display: false },
-          ticks: { color: '#8b949e' },
-          border: { display: false },
-        }
-      },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          ...TOOLTIP_STYLE,
-          callbacks: {
-            label: ctx => ' ' + ctx.parsed.y.toLocaleString('de-DE') + unit
+            callback: v => unit ? v.toLocaleString('de') + ' ' + unit : v.toLocaleString('de')
           }
         }
       }
@@ -607,76 +681,171 @@ function renderBarChart(id, actual, targets, color, unit, yMin, yMax) {
   });
 }
 
-/* ── Training Grid ── */
-function renderTraining(d) {
-  document.getElementById('training-grid').innerHTML = DAYS.map(day => {
-    const t = d.training[day];
-    const cls = `tile ${t.active ? 'active' : 'rest'}`;
-    return `<div class="${cls}">
-      <div class="tile-day">${day}</div>
-      <div class="tile-emoji">${t.emoji}</div>
-      <div class="tile-label">${t.label}</div>
-      ${t.detail ? `<div class="tile-detail">${t.detail}</div>` : ''}
-    </div>`;
-  }).join('');
+function initMetricCharts(allData) {
+  const kcalVals   = KWS.map(k => allData[k]?.avgKcal    || 0);
+  const protVals   = KWS.map(k => allData[k]?.avgProtein || 0);
+  const stepsVals  = KWS.map(k => allData[k]?.avgSteps   || 0);
+
+  kcalChartInst    = createMetricChart('kcalChart',   kcalVals,  2100, '#e8a630', 'kcal', 1500, 2500, 'Ziel 2000–2200');
+  proteinChartInst = createMetricChart('proteinChart', protVals,  170, '#bc8cff', 'g',     80,  200, 'Ziel 160–180g');
+  stepsChartInst   = createMetricChart('stepsChart',  stepsVals, 11000,'#3fb950', '',    7000, 14000, 'Ziel 11.000');
 }
 
-/* ── Metrics Table ── */
-function renderTable(d) {
+function highlightSelectedKW(kwNum) {
+  const idx = KWS.indexOf(kwNum);
+  [
+    [kcalChartInst,    '#e8a630'],
+    [proteinChartInst, '#bc8cff'],
+    [stepsChartInst,   '#3fb950'],
+  ].forEach(([chart, color]) => {
+    if (!chart) return;
+    chart.data.datasets[0].backgroundColor = KWS.map((_, i) => color + (i === idx ? 'cc' : '33'));
+    chart.data.datasets[0].borderColor     = KWS.map((_, i) => color + (i === idx ? '' : '66'));
+    chart.update('none');
+  });
+}
+
+/* ════════════════════════════════════════
+   RENDER KW CONTENT
+════════════════════════════════════════ */
+function renderKW(data, kwNum) {
+  if (!data) return;
+
+  document.getElementById('kwLabel').textContent = kwNum;
+
+  /* KPI Cards */
+  const loss = data.weightDiff < 0;
+  document.getElementById('kpiGrid').innerHTML = `
+    <div class="kpi-card">
+      <div class="kpi-label">Aktuelles Gewicht</div>
+      <div class="kpi-value c-accent">${data.weekEndWeight.toFixed(1)} kg</div>
+      <div class="kpi-sub">Ende KW ${data.kw} · ${data.dateRange}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Differenz Vorwoche</div>
+      <div class="kpi-value ${loss ? 'c-green' : 'c-red'}">${data.weightDiff > 0 ? '+' : ''}${data.weightDiff.toFixed(1)} kg</div>
+      <div class="kpi-sub">${data.prevWeekWeight.toFixed(1)} → ${data.weekEndWeight.toFixed(1)} kg</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Fortschritt zum Ziel</div>
+      <div class="kpi-value c-accent">${data.progressPercent.toFixed(1)} %</div>
+      <div class="progress-track"><div class="progress-fill" style="width:${data.progressPercent}%"></div></div>
+      <div class="kpi-sub" style="margin-top:6px">99,7 kg → 92,0 kg</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Trainingstage</div>
+      <div class="kpi-value ${data.trainingDays >= 4 ? 'c-green' : 'c-yellow'}">${data.trainingDays}</div>
+      <div class="kpi-sub">von 7 Tagen</div>
+    </div>
+  `;
+
+  /* Training grid */
+  const days = ['Mo','Di','Mi','Do','Fr','Sa','So'];
+  document.getElementById('trainingGrid').innerHTML = days.map(d => {
+    const info = data.schedule[d];
+    const rest = info.type === 'rest';
+    return `
+      <div class="day-tile ${rest ? 'rest-day' : 'has-training'}">
+        <div class="day-name">${d}</div>
+        <div class="day-emoji">${info.emoji}</div>
+        <div class="day-desc">${info.label}</div>
+      </div>`;
+  }).join('');
+
+  /* Stats table */
   const rows = [
     {
-      icon: '🔥', label: 'Kalorien',
-      ist: d.avgCalories + ' kcal',
-      ziel: d.targetCaloriesMin + '–' + d.targetCaloriesMax + ' kcal',
-      ok: d.avgCalories >= d.targetCaloriesMin && d.avgCalories <= d.targetCaloriesMax
+      metric: 'Kalorien',
+      ist: data.avgKcal.toLocaleString('de') + ' kcal',
+      ziel: '2.000 – 2.200 kcal',
+      ok: data.avgKcal >= 2000 && data.avgKcal <= 2200,
+      msg: data.avgKcal >= 2000 ? 'Ziel erreicht' : 'Unter Ziel',
     },
     {
-      icon: '🥩', label: 'Protein',
-      ist: d.avgProtein + ' g',
-      ziel: d.targetProteinMin + '–' + d.targetProteinMax + ' g',
-      ok: d.avgProtein >= d.targetProteinMin
+      metric: 'Protein',
+      ist: data.avgProtein + ' g',
+      ziel: '160 – 180 g',
+      ok: data.avgProtein >= 160,
+      msg: data.avgProtein >= 160 ? 'Ziel erreicht' : 'Unter Ziel',
     },
     {
-      icon: '👟', label: 'Schritte',
-      ist: d.avgSteps.toLocaleString('de-DE'),
-      ziel: '≥ ' + d.targetSteps.toLocaleString('de-DE'),
-      ok: d.avgSteps >= d.targetSteps
+      metric: 'Schritte',
+      ist: data.avgSteps.toLocaleString('de'),
+      ziel: '11.000',
+      ok: data.avgSteps >= 11000,
+      msg: data.avgSteps >= 11000 ? 'Ziel erreicht' : 'Unter Ziel',
     },
     {
-      icon: '🏋️', label: 'Trainingstage',
-      ist: d.trainingDays + ' von 7',
-      ziel: '≥ 5 Tage',
-      ok: d.trainingDays >= 5
+      metric: 'Trainingstage',
+      ist: data.trainingDays + ' Tage',
+      ziel: '5+ Tage',
+      ok: data.trainingDays >= 5,
+      msg: data.trainingDays >= 5 ? 'Ziel erreicht' : 'Leichtere Woche',
     },
-    {
-      icon: '⚖️', label: 'Gewichtstrend',
-      ist: d.weightEnd.toFixed(1) + ' kg',
-      ziel: '< ' + d.weightStart.toFixed(1) + ' kg (Wochenstart)',
-      ok: d.weightEnd < d.weightStart
-    }
   ];
 
-  document.getElementById('metrics-tbody').innerHTML = rows.map(r => `
+  document.getElementById('statsBody').innerHTML = rows.map(r => `
     <tr>
-      <td style="font-weight:500">${r.icon} ${r.label}</td>
-      <td style="color:var(--text);font-variant-numeric:tabular-nums">${r.ist}</td>
-      <td style="color:var(--muted)">${r.ziel}</td>
-      <td><span class="badge ${r.ok ? 'ok' : 'warn'}">${r.ok ? '✅ Erreicht' : '⚠️ Unter Ziel'}</span></td>
-    </tr>`).join('');
+      <td>${r.metric}</td>
+      <td>${r.ist}</td>
+      <td>${r.ziel}</td>
+      <td><span class="badge ${r.ok ? 'badge-ok' : 'badge-warn'}">${r.ok ? '✅' : '⚠️'} ${r.msg}</span></td>
+    </tr>
+  `).join('');
+
+  /* Coach comment */
+  document.getElementById('coachText').textContent = data.coachComment;
+
+  highlightSelectedKW(kwNum);
 }
 
-/* ── Coach ── */
-function renderCoach(d) {
-  set('coach-kw',   d.kw);
-  set('coach-text', d.coachComment);
-  set('notes-text', d.notes);
+/* ════════════════════════════════════════
+   DATA LOADING
+════════════════════════════════════════ */
+async function loadKW(kwNum) {
+  if (kwCache[kwNum]) { renderKW(kwCache[kwNum], kwNum); return; }
+  try {
+    const res = await fetch(`data/kw${kwNum}.json`);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    kwCache[kwNum] = data;
+    renderKW(data, kwNum);
+  } catch (e) {
+    console.error('Could not load KW', kwNum, e);
+  }
 }
 
-/* ── Util ── */
-function set(id, val) { document.getElementById(id).textContent = val; }
+async function init() {
+  initWeightChart();
 
-/* ── Init ── */
-loadKW(16);
+  const results = await Promise.allSettled(
+    KWS.map(async kw => {
+      const res = await fetch(`data/kw${kw}.json`);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      kwCache[kw] = data;
+      return [kw, data];
+    })
+  );
+
+  const allData = {};
+  results.forEach(r => {
+    if (r.status === 'fulfilled') {
+      const [kw, data] = r.value;
+      allData[kw] = data;
+    }
+  });
+
+  initMetricCharts(allData);
+
+  /* Default: latest available KW */
+  const latest = Math.max(...Object.keys(allData).map(Number));
+  document.getElementById('kwSelect').value = latest;
+  renderKW(allData[latest], latest);
+}
+
+document.getElementById('kwSelect').addEventListener('change', e => loadKW(+e.target.value));
+init();
 </script>
 </body>
 </html>
