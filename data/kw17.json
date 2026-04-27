@@ -1,0 +1,22 @@
+{
+  "kw": 17,
+  "dateRange": "20.04 – 26.04",
+  "prevWeekWeight": 96.8,
+  "weekEndWeight": 95.9,
+  "weightDiff": -0.9,
+  "progressPercent": 49.4,
+  "avgKcal": 1950,
+  "avgProtein": 170,
+  "avgSteps": 11600,
+  "trainingDays": 3,
+  "coachComment": "Solide Erholungswoche – Protein perfekt im Zielbereich, Schritte sogar über dem Ziel mit 11.600! 3 fokussierte Gym-Einheiten reichen völlig. Der Ausreisser am 27.04 mit 98,0 kg ist sehr wahrscheinlich Wasserretention oder Verdauung – kein Grund zur Sorge. Konsistenz über Perfektion bleibt die Devise.",
+  "schedule": {
+    "Mo": { "emoji": "😴", "label": "Rest", "type": "rest" },
+    "Di": { "emoji": "🏋️", "label": "Gym Brust/Rücken/Bauch", "type": "gym" },
+    "Mi": { "emoji": "🏋️", "label": "Gym Beine/Bauch", "type": "gym" },
+    "Do": { "emoji": "😴", "label": "Rest", "type": "rest" },
+    "Fr": { "emoji": "💪", "label": "Gym Schulter/Arme/Bauch", "type": "gym" },
+    "Sa": { "emoji": "😴", "label": "Rest", "type": "rest" },
+    "So": { "emoji": "😴", "label": "Rest", "type": "rest" }
+  }
+}
