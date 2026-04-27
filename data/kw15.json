@@ -1,33 +1,22 @@
 {
   "kw": 15,
-  "dateRange": "07.04 – 13.04.2026",
-  "weightStart": 99.3,
-  "weightEnd": 98.5,
-  "avgCalories": 1949,
-  "targetCaloriesMin": 2000,
-  "targetCaloriesMax": 2200,
+  "dateRange": "07.04 – 13.04",
+  "prevWeekWeight": 99.3,
+  "weekEndWeight": 98.5,
+  "weightDiff": -0.8,
+  "progressPercent": 15.6,
+  "avgKcal": 1949,
   "avgProtein": 141,
-  "targetProteinMin": 160,
-  "targetProteinMax": 180,
   "avgSteps": 10443,
-  "targetSteps": 11000,
   "trainingDays": 5,
-  "training": {
-    "Mo": { "emoji": "🏃‍♂️", "label": "Laufen + Calisthenics", "detail": "7.8 km", "active": true },
-    "Di": { "emoji": "🦵", "label": "Beine + Bauch", "detail": "Gym", "active": true },
-    "Mi": { "emoji": "💪", "label": "Schulter + Arme", "detail": "+ Stairmaster", "active": true },
-    "Do": { "emoji": "🏃‍♂️", "label": "Laufen", "detail": "5 km", "active": true },
-    "Fr": { "emoji": "😴", "label": "Rest", "detail": "", "active": false },
-    "Sa": { "emoji": "😴", "label": "Rest", "detail": "", "active": false },
-    "So": { "emoji": "🏃‍♂️", "label": "Laufen + Pull Ups", "detail": "7.6 km", "active": true }
-  },
-  "notes": "Erste vollständige Trackingwoche. Protein unter Ziel. Lidl Whey verursacht Akne – Wechsel zu ESN Isoclear.",
-  "coachComment": "Starker Einstieg, Daiki! 5 Trainingstage in der ersten vollständigen Trackingwoche – das zeigt echte Disziplin. Die Kalorien lagen leicht unter dem Minimum (1.949 vs. 2.000 kcal) – hier ruhig etwas mehr essen, um die Muskulatur bestmöglich zu erhalten. Protein mit 141g noch unter dem Zielbereich: Der Wechsel zu ESN Isoclear war genau die richtige Entscheidung. Schritte knapp unter 11k, aber du bist dicht dran. Weiter so – nächste Woche packen wir alle Ziele!",
-  "weightHistory": [
-    { "date": "30.03", "ts": "2026-03-30", "weight": 99.7 },
-    { "date": "06.04", "ts": "2026-04-06", "weight": 99.3 },
-    { "date": "07.04", "ts": "2026-04-07", "weight": 98.4 },
-    { "date": "08.04", "ts": "2026-04-08", "weight": 98.5 },
-    { "date": "13.04", "ts": "2026-04-13", "weight": 98.4 }
-  ]
+  "coachComment": "Erste vollständige Trackingwoche – solider Einstieg! Das Protein bleibt mit 141g das grösste Optimierungspotenzial. Der Wechsel von Lidl Whey zu ESN Isoclear bei Akne-Problemen ist absolut richtig. Laufvolumen mit 3 Einheiten und knapp 20 km sehr stark. Diese Basis weiter ausbauen!",
+  "schedule": {
+    "Mo": { "emoji": "🏃", "label": "Laufen 7.8km + Calisthenics", "type": "run" },
+    "Di": { "emoji": "🏋️", "label": "Beine + Bauch", "type": "gym" },
+    "Mi": { "emoji": "💪", "label": "Schulter + Arme + Stairmaster", "type": "gym" },
+    "Do": { "emoji": "🏃", "label": "Laufen 5km", "type": "run" },
+    "Fr": { "emoji": "😴", "label": "Rest", "type": "rest" },
+    "Sa": { "emoji": "😴", "label": "Rest", "type": "rest" },
+    "So": { "emoji": "🏃", "label": "Laufen 7.6km + Pull Ups", "type": "run" }
+  }
 }
