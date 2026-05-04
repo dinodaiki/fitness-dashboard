@@ -384,6 +384,7 @@
     <div class="kw-selector">
       <label for="kwSelect">Kalenderwoche</label>
       <select id="kwSelect">
+        <option value="18">KW 18 (27.04 – 03.05)</option>
         <option value="17">KW 17 (20.04 – 26.04)</option>
         <option value="16">KW 16 (13.04 – 19.04)</option>
         <option value="15">KW 15 (07.04 – 13.04)</option>
@@ -450,7 +451,7 @@
   </div>
 
   <footer class="footer">
-    Generiert am 27.04.2026 &nbsp;·&nbsp; Daiki Fitness Dashboard
+    Generiert am 04.05.2026 &nbsp;·&nbsp; Daiki Fitness Dashboard
   </footer>
 
 </div><!-- /container -->
@@ -464,7 +465,7 @@ Chart.defaults.borderColor  = '#30363d';
 Chart.defaults.font.family  = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
 Chart.defaults.font.size    = 12;
 
-const KWS = [15, 16, 17];
+const KWS = [15, 16, 17, 18];
 const kwCache = {};
 let kcalChartInst = null, proteinChartInst = null, stepsChartInst = null;
 
@@ -485,6 +486,13 @@ const weightHistory = [
   { x: '2026-04-24', y: 96.1 },
   { x: '2026-04-25', y: 95.9 },
   { x: '2026-04-27', y: 98.0 },
+  { x: '2026-04-28', y: 96.8 },
+  { x: '2026-04-29', y: 97.0 },
+  { x: '2026-04-30', y: 96.6 },
+  { x: '2026-05-01', y: 96.4 },
+  { x: '2026-05-02', y: 96.6 },
+  { x: '2026-05-03', y: 97.6 },
+  { x: '2026-05-04', y: 96.4 },
 ];
 
 /* Linear target: 99.7 kg (30.03) → 92.0 kg (30.06) */
@@ -686,9 +694,9 @@ function initMetricCharts(allData) {
   const protVals   = KWS.map(k => allData[k]?.avgProtein || 0);
   const stepsVals  = KWS.map(k => allData[k]?.avgSteps   || 0);
 
-  kcalChartInst    = createMetricChart('kcalChart',   kcalVals,  2100, '#e8a630', 'kcal', 1500, 2500, 'Ziel 2000–2200');
-  proteinChartInst = createMetricChart('proteinChart', protVals,  170, '#bc8cff', 'g',     80,  200, 'Ziel 160–180g');
-  stepsChartInst   = createMetricChart('stepsChart',  stepsVals, 11000,'#3fb950', '',    7000, 14000, 'Ziel 11.000');
+  kcalChartInst    = createMetricChart('kcalChart',   kcalVals,  2100, '#e8a630', 'kcal', 1500, 2500,  'Ziel 2000–2200');
+  proteinChartInst = createMetricChart('proteinChart', protVals,  170, '#bc8cff', 'g',     80,  200,  'Ziel 160–180g');
+  stepsChartInst   = createMetricChart('stepsChart',  stepsVals, 11000,'#3fb950', '',    7000, 15000, 'Ziel 11.000');
 }
 
 function highlightSelectedKW(kwNum) {
@@ -849,3 +857,4 @@ init();
 </script>
 </body>
 </html>
+
