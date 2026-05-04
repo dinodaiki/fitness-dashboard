@@ -1,0 +1,23 @@
+{
+  "kw": 18,
+  "dateRange": "27.04 – 03.05",
+  "prevWeekWeight": 98.0,
+  "weekEndWeight": 97.6,
+  "weekLow": 96.4,
+  "weightDiff": -0.4,
+  "progressPercent": 27.3,
+  "avgKcal": 1916,
+  "avgProtein": 150,
+  "avgSteps": 12900,
+  "trainingDays": 6,
+  "coachComment": "Starke Woche mit 6 Trainingseinheiten – Laufen 7,8 km + 9,4 km, Kreuzheben, Pull-Ups, Dips. Schritte mit Ø 12.900 deutlich über Ziel, Schlaf endlich verbessert (Ø 8:17h). Das Wochenend-Pattern ist bekannt: Freitag Familiengrillen + Sonntagsgewicht nach langer Laufeinheit. Wochentief war 96,4 kg – das zeigt die echte Tendenz. Protein mit 150g unter Ziel, nächste Woche Fokus auf 160–180g legen.",
+  "schedule": {
+    "Mo": { "emoji": "🏃", "label": "Laufen 7,8 km + Calisthenics", "type": "cardio" },
+    "Di": { "emoji": "🏋️", "label": "Gym Brust/Rücken/Bauch", "type": "gym" },
+    "Mi": { "emoji": "🏋️", "label": "Gym Beine/Bauch", "type": "gym" },
+    "Do": { "emoji": "💪", "label": "Gym Schulter/Arme", "type": "gym" },
+    "Fr": { "emoji": "🍖", "label": "Familiengrillen", "type": "rest" },
+    "Sa": { "emoji": "🏋️", "label": "Kreuzheben/Schulter/Pull-Ups/Dips", "type": "gym" },
+    "So": { "emoji": "🏃", "label": "Laufen 9,4 km", "type": "cardio" }
+  }
+}
