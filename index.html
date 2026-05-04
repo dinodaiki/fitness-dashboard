@@ -186,7 +186,7 @@
 
     .chart-container {
       position: relative;
-      height: 400px;
+      height: 520px;
     }
 
     /* ── Metric Charts Row ── */
@@ -527,8 +527,8 @@ function initWeightChart() {
           fill: true,
           tension: 0.35,
           borderWidth: 2.5,
-          pointRadius: 7,
-          pointHoverRadius: 10,
+          pointRadius: 9,
+          pointHoverRadius: 12,
           pointBackgroundColor: '#58a6ff',
           pointBorderColor: '#0d1117',
           pointBorderWidth: 2,
@@ -537,12 +537,12 @@ function initWeightChart() {
         {
           label: 'Ziel (92 kg)',
           data: goalLine,
-          borderColor: 'rgba(63,185,80,0.45)',
+          borderColor: 'rgba(63,185,80,0.22)',
           borderWidth: 1,
-          borderDash: [8, 6],
-          pointRadius: 4,
-          pointHoverRadius: 5,
-          pointBackgroundColor: 'rgba(63,185,80,0.6)',
+          borderDash: [6, 8],
+          pointRadius: 3,
+          pointHoverRadius: 4,
+          pointBackgroundColor: 'rgba(63,185,80,0.35)',
           pointBorderWidth: 0,
           fill: false,
           tension: 0,
@@ -857,4 +857,5 @@ init();
 </script>
 </body>
 </html>
+
 
